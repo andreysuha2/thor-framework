@@ -3,8 +3,10 @@
   "version": "0.0.1",
   "description": "Node.js framework",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
-    "set-aliases": ""
+    "set-aliases": "link-module-alias",
+    "start": "npm run set-alises && node --experimental-specifier-resolution=node -r dotenv/config index.js"
   },
   "repository": {
     "type": "git",
@@ -26,5 +28,9 @@
   "devDependencies": {
     "dotenv": "^8.5.1",
     "link-module-alias": "^1.2.0"
+  },
+  "_moduleAliases": {
+    "core": "core",
+    "core-server": "core/server"
   }
 }
