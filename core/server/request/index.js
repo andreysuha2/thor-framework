@@ -1,3 +1,5 @@
+import BodyParser from "./bodyParser";
+
 class Request {
     #request;
     #origin;
@@ -36,11 +38,7 @@ class Request {
     }
 
     get body() {
-        const body = [];
-        return new Promise((resolve) => {
-            this.on('data', chunk => { body.push(chunk) })
-                .on('end', () => resolve(Buffer.concat(body).toString()));
-        });
+        return this.method == "POST" || this.method === "PUT" ? new BodyParser(this) : null;
     }
 
     on(name, handler) {

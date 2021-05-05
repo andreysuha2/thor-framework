@@ -17,7 +17,9 @@ class Server {
     async #handler(req, res) {
         const request = new Request(req, this.url);
         const body = await request.body;
-        res.end(JSON.stringify([ body, request.headers ]));
+        console.log(body);
+        res.setHeader('Content-Type', "application/json");
+        res.end(JSON.stringify([ body ]));
     }
 
     async #init() {
