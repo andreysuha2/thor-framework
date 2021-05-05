@@ -1,7 +1,3 @@
-import Server from "core-server";
+import bootstrap from "core-bootstrap";
 
-new Server(
-    process.env.SERVER_PROTOCOL,
-    process.env.SERVER_HOST,
-    process.env.SERVER_PORT
-);
+bootstrap.load().then(() => console.log(`App running at ${new Date()}`));
