@@ -31,6 +31,7 @@
   },
   "_moduleAliases": {
     "core": "core",
-    "core-server": "core/server"
+    "core-server": "core/server",
+    "core-request": "core/server/request"
   }
 }
