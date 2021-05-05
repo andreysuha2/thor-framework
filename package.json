@@ -1,0 +1,30 @@
+{
+  "name": "thor-framework",
+  "version": "0.0.1",
+  "description": "Node.js framework",
+  "main": "index.js",
+  "scripts": {
+    "set-aliases": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andreysuha2/thor-framework.git"
+  },
+  "keywords": [
+    "nodejs",
+    "node.js",
+    "node",
+    "node",
+    "framework"
+  ],
+  "author": "Andrey Sukhenko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andreysuha2/thor-framework/issues"
+  },
+  "homepage": "https://github.com/andreysuha2/thor-framework#readme",
+  "devDependencies": {
+    "dotenv": "^8.5.1",
+    "link-module-alias": "^1.2.0"
+  }
+}
