@@ -1,4 +1,5 @@
 import http from "http";
+import Request from "core-request";
 
 class Server {
     constructor(protocol, host, port) {
@@ -13,7 +14,11 @@ class Server {
         this.instance.listen(port, host, this.#init.bind(this));
     }
 
-    async #handler(req, res) {}
+    async #handler(req, res) {
+        const request = new Request(req, this.url);
+        const body = await request.body;
+        res.end(JSON.stringify([ body, request.headers ]));
+    }
 
     async #init() {
         const time = new Date();
