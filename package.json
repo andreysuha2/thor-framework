@@ -31,12 +31,14 @@
   },
   "_moduleAliases": {
     "core": "core",
+    "core-services": "core/services",
     "core-bootstrap": "core/bootstrap",
     "core-helpers": "core/helpers",
     "core-config": "core/config",
     "core-server": "core/server",
     "core-request": "core/server/request",
-    "core-response": "core/server/response"
+    "core-response": "core/server/response",
+    "root": "src"
   },
   "dependencies": {
     "multiparty": "^4.2.2"

@@ -9,9 +9,9 @@ class Config {
         path.splice(0, 1);
         if(this.#list.hasOwnProperty(name)) {
             const config = this.#list[name],
-                configData = deepSearch(path, config);
+                configData = path.length ? deepSearch(path.join("."), config.data) : config.data;
             if(config.updatable) return configData;
-            return JSON.parse(JSON.stringify(configData));
+            return configData ? JSON.parse(JSON.stringify(configData)) : configData;
         } return undefined;
     }
 

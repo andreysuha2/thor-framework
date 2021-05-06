@@ -1,11 +1,12 @@
 import http from "http";
 import Request from "core-request";
 import Response from "core-response";
+import eventEmitter from "core-services/EventEmitter";
 
 class Server {
     #isReady = false;
     #instance;
-    #readyHandlers = [];
+    #eventObjectName = "server";
 
     constructor(protocol, host, port) {
         Object.defineProperties(this, {
@@ -20,22 +21,31 @@ class Server {
     }
 
     onReady(handler) {
-        this.#isReady ? handler() : this.#readyHandlers.push(handler);
+        this.#isReady ? handler() : this.onEvent("ready", handler);
+    }
+
+    onEvent(eventName, handler, handlerName = null) {
+        eventEmitter.on(this.#eventObjectName, eventName, handler, handlerName);
+    }
+
+    emitEvent(eventName, data = {}, handlerName = null) {
+        eventEmitter.emit(this.#eventObjectName, eventName, data, handlerName);
+    }
+
+    offEvent(eventName, handlerName = null) {
+        eventEmitter.off(this.#eventObjectName, eventName, handlerName);
     }
 
     async #handler(req, res) {
         const request = new Request(req, this.url);
         const response = new Response(res);
-        const body = await request.body;
-        console.log(body);
-        res.setHeader('Content-Type', "application/json");
-        res.end(JSON.stringify([ body ]));
+        this.emitEvent("request", { request, response });
     }
 
     async #init() {
         console.log(`Server running at: ${this.url},\n${new Date()}`);
-        this.#readyHandlers.forEach((handler) => handler());
-        this.#readyHandlers = [];
+        this.emitEvent("ready");
+        this.offEvent("ready");
     }
 }
 

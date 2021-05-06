@@ -63,7 +63,7 @@ export function arrayChunk(arr, size) {
 }
 
 export function deepSearch(name, obj, errorOnEmpty = false) {
-    if(!isObject(obj) || !Array.isArray(obj)) {
+    if(!isObject(obj) && !Array.isArray(obj)) {
         return errorOnEmpty ? "No searchable object" : undefined;
     }
     let path = name.split("."),
