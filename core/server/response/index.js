@@ -39,7 +39,7 @@ class Response {
 
     error(message, statusCode = "internalServerError", statusMessage = null) {
         this.setStatus(statusCode, statusMessage);
-        this.send(message);
+        this.send(message, statusCode, statusMessage);
     }
 
     send(data, statusCode = "success", statusMessage = null) {

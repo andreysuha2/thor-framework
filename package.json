@@ -38,6 +38,7 @@
     "core-server": "core/server",
     "core-request": "core/server/request",
     "core-response": "core/server/response",
+    "core-router": "core/router",
     "root": "src"
   },
   "dependencies": {

@@ -1,13 +1,16 @@
 import Server from "core-server";
+import RouteParh from "core-router/route/path";
 
 class App {
     #server;
 
     async init() {
         this.#server = await this.#initServer();
-        this.#server.onEvent("request", ({ response }) => {
+        this.#server.onEvent("request", async ({ response, request }) => {
             try {
-                response.send({ test: "test" });
+                const { data } = await request.body;
+                const path = new RouteParh(data.path);
+                response.send(path);
             } catch (e) {
                 console.log(e);
                 response.error("Something went wrong!")
