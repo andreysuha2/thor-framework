@@ -39,7 +39,9 @@
     "core-request": "core/server/request",
     "core-response": "core/server/response",
     "core-router": "core/router",
-    "root": "src"
+    "core-route": "core/router/register.js",
+    "root": "src",
+    "root-routes": "src/routes"
   },
   "dependencies": {
     "multiparty": "^4.2.2"

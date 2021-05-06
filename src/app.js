@@ -1,21 +1,26 @@
 import Server from "core-server";
-import RouteParh from "core-router/route/path";
+import Router from "core-router";
+import RouteRegister from "core-router/register";
+import webRoutes from "root-routes/web";
 
 class App {
     #server;
+    #router;
 
     async init() {
         this.#server = await this.#initServer();
-        this.#server.onEvent("request", async ({ response, request }) => {
-            try {
-                const { data } = await request.body;
-                const path = new RouteParh(data.path);
-                response.send(path);
-            } catch (e) {
-                console.log(e);
-                response.error("Something went wrong!")
-            }
-        });
+        this.#router = new Router();
+        this.#server.onEvent("request", this.#onRequest.bind(this));
+        webRoutes(new RouteRegister(this.#router));
+    }
+
+    async #onRequest({ request, response }) {
+        try {
+            await this.#router.handleRequest(request, response);
+        } catch (e) {
+            console.log(e);
+            response.error("Something went wrong!");
+        }
     }
 
     #initServer() {

@@ -1,9 +1,11 @@
+import { pathCatSlashes } from "core-helpers";
+
 class RoutePath {
     #origin;
     #dynamicRegExp = new RegExp("^\{.*\}$");
 
     constructor(path) {
-        this.#origin = this.#catDashes(path);
+        this.#origin = pathCatSlashes(path);
     }
 
     get #path() {
@@ -21,9 +23,9 @@ class RoutePath {
         return this.#path.some(item => item.dynamic);
     }
 
-    getDynamicValues(path) {
+    getParams(path) {
         if(!this.compare(path)) throw `"${path}" is no same as "${this.#origin}"`;
-        return this.#catDashes(path).split("/")
+        return pathCatSlashes(path).split("/")
             .reduce((list, item, i) => {
                 if(this.#path[i].dynamic) list.push({ alias: this.#path[i].alias, value: item });
                 return list;
@@ -31,17 +33,11 @@ class RoutePath {
     }
 
     compare(path) {
-        path = this.#catDashes(path).split("/");
+        path = pathCatSlashes(path).split("/");
         if(path.length !== this.#path.length) return false;
         return path.every((item, i) => {
             return this.#path[i].dynamic || item === this.#path[i].alias;
         });
-    }
-
-    #catDashes(path) {
-        if(path[0] === "/") path = path.substr(1, path.length);
-        if(path[path.length - 1] === "/") path = path.substr(0, path.length - 1);
-        return path;
     }
 }
 
