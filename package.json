@@ -40,8 +40,11 @@
     "core-response": "core/server/response",
     "core-router": "core/router",
     "core-route": "core/router/register.js",
+    "core-middlewares": "core/router/middlewares",
+    "core-middleware": "core/router/middlewares/middleware.js",
     "root": "src",
-    "root-routes": "src/routes"
+    "root-routes": "src/routes",
+    "root-middlewares": "src/middlewares"
   },
   "dependencies": {
     "multiparty": "^4.2.2"

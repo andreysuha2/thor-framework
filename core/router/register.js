@@ -52,9 +52,14 @@ class RouteRegister {
 
     #createGroup() {
         const groupName = generator.genKey("ROUTE_GROUP"),
+            router = this.#router,
             group = {
                 middlewares(middlewares = []) {
                     router.groupMiddlewares(groupName, middlewares);
+                    return group;
+                },
+                middleware(middleware) {
+                    router.groupMiddlewares(groupName, [ middleware ]);
                     return group;
                 },
                 validators(validators = []) {

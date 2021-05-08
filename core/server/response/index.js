@@ -1,12 +1,45 @@
 import config from "core-config";
 import { isObject } from "core-helpers";
+import eventEmitter from "core-services/EventEmitter";
 
 class Response {
     #response;
     #statusCodes = config.read("statusCodes");
+    #finished = false;
+    #isStarted = false;
+    #eventObjectName = "response";
 
     constructor(response) {
         this.#response = response;
+        this.#response.on("finish", () => {
+            this.#finished = true;
+            this.emit("finished");
+        });
+    }
+
+    get #started() {
+        return this.#isStarted;
+    }
+
+    set #started(value) {
+        this.#isStarted = Boolean(value);
+        if(this.#isStarted) this.emit("startSending");
+    }
+
+    once(event, handler, handlerName = null) {
+        return eventEmitter.once(this.#eventObjectName, event, handler, handlerName);
+    }
+
+    on(event, handler, handlerName = null) {
+        return eventEmitter.on(this.#eventObjectName, event, handler, handlerName);
+    }
+
+    emit(event, data = {}, handlerName = null) {
+        eventEmitter.emit(this.#eventObjectName, event, data, handlerName);
+    }
+
+    off(event, handlerName = null) {
+        eventEmitter.off(this.#eventObjectName, event, handlerName);
     }
 
     setStatus(code, message = null) {
@@ -33,11 +66,12 @@ class Response {
     }
 
     write(message, statusCode = "success", statusMessage = null) {
+        this.#started = true;
         this.setStatus(statusCode, statusMessage);
         this.#response.write(message);
     }
 
-    error(message, statusCode = "internalServerError", statusMessage = null) {
+    error(message = "Something went wrong!", statusCode = "internalServerError", statusMessage = null) {
         this.setStatus(statusCode, statusMessage);
         this.send(message, statusCode, statusMessage);
     }
@@ -52,6 +86,7 @@ class Response {
     }
 
     end() {
+        this.#started = true;
         this.#response.end(...arguments);
     }
 
