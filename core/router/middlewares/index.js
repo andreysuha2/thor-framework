@@ -1,5 +1,3 @@
-import MiddlewareAbstract from "./middleware";
-import eventEmitter from "core-services/EventEmitter";
 import MiddlewaresHandler from "./handler";
 
 class Middlewares {
