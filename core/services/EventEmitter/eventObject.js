@@ -10,7 +10,7 @@ class EventObject {
     }
 
     get hasEvents() {
-        return isObjectEmpty(this.#events);
+        return !isObjectEmpty(this.#events);
     }
 
     on(eventName, handler, handlerName = null) {

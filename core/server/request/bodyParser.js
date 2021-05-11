@@ -9,7 +9,7 @@ class BodyParser {
     };
 
     constructor(request) {
-        const contentType = request.headers['content-type'],
+        const contentType = request.headers['content-type'] || "",
             [ type ] = contentType.split(";");
         return new Promise((resolve, reject) => {
             if(!type || !this.#types.hasOwnProperty(type)) {
@@ -28,7 +28,7 @@ class BodyParser {
     async #json(request) {
         try {
             const body = await this.#loadBody(request);
-            return { fields: JSON.parse(body) };
+            return { fields: body ? JSON.parse(body) : body };
         } catch (e) {
             throw new Error(e);
         }
@@ -38,7 +38,7 @@ class BodyParser {
     async #XWwwFormUrlencoded(request) {
         try {
             const body = await this.#loadBody(request);
-            return { fields: qs.parse(body, "&") };
+            return { fields: body ? qs.parse(body, "&") : body };
         } catch (e) {
             throw new Error(e);
         }
