@@ -43,10 +43,13 @@
     "core-middlewares": "core/router/middlewares",
     "core-middleware": "core/router/middlewares/middleware.js",
     "core-request-validator": "core/router/requests",
+    "core-controllers": "core/controllers",
+    "core-controller": "core/controllers/controller.js",
     "root": "src",
     "root-routes": "src/routes",
     "root-middlewares": "src/middlewares",
-    "root-requests": "src/requests"
+    "root-requests": "src/requests",
+    "root-controllers": "src/controllers"
   },
   "dependencies": {
     "joi": "^17.4.0",

@@ -1,6 +1,7 @@
 import Route from "./route";
 import generator from "core-helpers/generator";
-import { pathCatSlashes } from "core-helpers";
+import { pathCatSlashes, isObject } from "core-helpers";
+import controllers from "core-controllers";
 
 class RouteRegister {
     #path;
@@ -67,6 +68,10 @@ class RouteRegister {
     }
 
     #register(method, path, handler, middlewares = [], request = null) {
+        if(isObject(handler)) {
+            const [ path ] = handler.use.split("@");
+            controllers.add(path, handler.dynamic);
+        }
         const fullPath = `${this.#path}/${pathCatSlashes(path)}`;
         const route = new Route(
             method,
