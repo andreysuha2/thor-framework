@@ -3,8 +3,10 @@
   "version": "0.0.1",
   "description": "Node.js framework",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "set-aliases": ""
+    "set-aliases": "link-module-alias",
+    "start": "npm run set-aliases && node --experimental-specifier-resolution=node -r dotenv/config index.js"
   },
   "repository": {
     "type": "git",
@@ -26,5 +28,28 @@
   "devDependencies": {
     "dotenv": "^8.5.1",
     "link-module-alias": "^1.2.0"
+  },
+  "_moduleAliases": {
+    "core": "core",
+    "core-services": "core/services",
+    "core-bootstrap": "core/bootstrap",
+    "core-helpers": "core/helpers",
+    "core-config": "core/config",
+    "core-server": "core/server",
+    "core-request": "core/server/request",
+    "core-response": "core/server/response",
+    "core-router": "core/router",
+    "core-route": "core/router/register.js",
+    "core-middlewares": "core/router/middlewares",
+    "core-middleware": "core/router/middlewares/middleware.js",
+    "core-request-validator": "core/router/requests",
+    "root": "src",
+    "root-routes": "src/routes",
+    "root-middlewares": "src/middlewares",
+    "root-requests": "src/requests"
+  },
+  "dependencies": {
+    "joi": "^17.4.0",
+    "multiparty": "^4.2.2"
   }
 }
