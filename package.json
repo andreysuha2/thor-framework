@@ -42,11 +42,14 @@
     "core-route": "core/router/register.js",
     "core-middlewares": "core/router/middlewares",
     "core-middleware": "core/router/middlewares/middleware.js",
+    "core-request-validator": "core/router/requests",
     "root": "src",
     "root-routes": "src/routes",
-    "root-middlewares": "src/middlewares"
+    "root-middlewares": "src/middlewares",
+    "root-requests": "src/requests"
   },
   "dependencies": {
+    "joi": "^17.4.0",
     "multiparty": "^4.2.2"
   }
 }

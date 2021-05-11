@@ -43,9 +43,17 @@ export default {
         code: 404,
         message: "Not found"
     },
+    methodNotAllowed: {
+        code: 405,
+        message: "Method is not allowed for this route"
+    },
     lengthRequired: {
         code: 411,
         message: "Length Required"
+    },
+    unprocessableEntity: {
+        code: 422,
+        message: "Unprocessable Entity"
     },
     internalServerError: {
         code: 500,

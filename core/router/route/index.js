@@ -1,31 +1,28 @@
 import RoutePath from "./path";
-import {camelizeObject} from "core-helpers";
+import { camelizeObject } from "core-helpers";
 import Middlewares from "core-middlewares";
+import RouteHandler from "./handler";
 
 class Route {
     #path;
     #handler;
     #method;
     #middlewares;
-    #validators = [];
+    #requestPreHandler;
     #group;
 
-    constructor(method, path, handler, group = "default", middlewares = [], validators = []) {
+    constructor(method, path, handler, group = "default", middlewares = [], requestPreHandler = null) {
         this.#path = new RoutePath(path);
         this.#handler = handler;
         this.#method = method.toUpperCase();
         this.#middlewares = new Middlewares(middlewares);
-        this.#validators.push(...validators);
+        this.#requestPreHandler = requestPreHandler;
         this.#group = group;
     }
 
     async handle(request, response) {
-        const body = await request.body,
-            params = this.#path.isDynamic ? this.#getDynamicParams(request.path): null;
-        this.#middlewares.handler(request, response, params)
-            .onFinished(() => this.#handler({ params, data: body, response, request }))
-            .onStopped(() => console.log("Middleware stopped"))
-            .handle();
+        const handler = new RouteHandler(request, response, this.#path, this.#handler, this.#middlewares, this.#requestPreHandler);
+        await handler.handle();
     }
 
     is(method, path) {
@@ -54,13 +51,11 @@ class Route {
         return this;
     }
 
-    validators(validators) {
-        this.#validators.push(...validators);
-        return this;
-    }
-
-    validate(validator) {
-        this.#validators.push(validator);
+    async request(request) {
+        const [ path, params ] = request.split(":"),
+            [ code = null, text = null ] = params ? params.split(",") : [],
+            handler = await import(`root-requests/${path}.js`);
+        this.#requestPreHandler = { handler: handler.default, code, text };
         return this;
     }
 

@@ -3,7 +3,11 @@ class Router {
 
     async handleRequest(request, response) {
        const route = this.#getRoute(request.method, request.path);
-       if(!route) response.error("Not found", "notFound");
+       if(!route) {
+           let error = [ "Not found", "notFound" ];
+           if(this.#hasPath(request.path)) error = [ "Method not allowed", "methodNotAllowed" ];
+           response.error(...error);
+       }
        else await route.handle(request, response);
     }
 
@@ -17,13 +21,12 @@ class Router {
         routes.forEach(route => route.middlewares(middlewares));
     }
 
-    groupValidators(group, validators) {
-        const routes = this.#routes.filter(route => route.isGroup(group));
-        routes.forEach(route => route.validators(validators));
-    }
-
     #hasRoute(method, path) {
         return this.#routes.some(route => route.is(method, path));
+    }
+
+    #hasPath(path) {
+        return this.#routes.some(route => route.isPath(path));
     }
 
     #getRoute(method, path) {

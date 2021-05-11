@@ -5,44 +5,44 @@ import { pathCatSlashes } from "core-helpers";
 class RouteRegister {
     #path;
     #middlewares = [];
-    #validators = [];
+    #request;
     #group;
     #router;
 
-    constructor(router, path = "", middlewares = [], validators = [], group = "default") {
+    constructor(router, path = "", middlewares = [], request = null, group = "default") {
         this.#path = pathCatSlashes(path);
         this.#middlewares = middlewares;
-        this.#validators = validators;
+        this.#request = request;
         this.#group = group;
         this.#router = router;
     }
 
-    request(method, path, handler, { middlewares = [], validators = [] } = {}) {
-        return this.#register(method, path, handler, middlewares, validators);
+    request(method, path, handler, { middlewares = [], request = null } = {}) {
+        return this.#register(method, path, handler, middlewares, request);
     }
 
-    get(path, handler, { middlewares = [], validators = [] } = {}) {
-        return this.request("GET", path, handler, { middlewares, validators });
+    get(path, handler, { middlewares = [], request = null } = {}) {
+        return this.request("GET", path, handler, { middlewares, request });
     }
 
-    post(path, handler, { middlewares = [], validators = [] } = {}) {
-        return this.request("POST", path, handler, { middlewares, validators });
+    post(path, handler, { middlewares = [], request = null } = {}) {
+        return this.request("POST", path, handler, { middlewares, request });
     }
 
-    put(path, handler, { middlewares = [], validators = [] } = {}) {
-        return this.request("PUT", path, handler,{ middlewares, validators });
+    put(path, handler, { middlewares = [], request = null } = {}) {
+        return this.request("PUT", path, handler,{ middlewares, request });
     }
 
-    delete(path, handler, { middlewares = [], validators = [] } = {}) {
-        return this.request("DELETE", path, handler, { middlewares, validators });
+    delete(path, handler, { middlewares = [], request = null } = {}) {
+        return this.request("DELETE", path, handler, { middlewares, request });
     }
 
-    group({ path = "", middlewares = [], validators = [] } = {}, handler) {
+    group({ path = "", middlewares = [] } = {}, handler) {
         const [groupName, group] = this.#createGroup();
         const r = new RouteRegister(
             this.#router,
             path, [...this.#middlewares, ...middlewares],
-            [...this.#validators, ...validators],
+            null,
             groupName
         );
         handler(r);
@@ -61,16 +61,12 @@ class RouteRegister {
                 middleware(middleware) {
                     router.groupMiddlewares(groupName, [ middleware ]);
                     return group;
-                },
-                validators(validators = []) {
-                    router.groupValidators(groupName, validators);
-                    return group
                 }
             };
         return [ groupName, group ];
     }
 
-    #register(method, path, handler, middlewares = [], validators = []) {
+    #register(method, path, handler, middlewares = [], request = null) {
         const fullPath = `${this.#path}/${pathCatSlashes(path)}`;
         const route = new Route(
             method,
@@ -78,7 +74,7 @@ class RouteRegister {
             handler,
             this.#group,
             [ ...this.#middlewares, ...middlewares ],
-            [ ...validators, this.#validators ]);
+            request);
         this.#router.addRoute(method, fullPath, route);
         return route;
     }
