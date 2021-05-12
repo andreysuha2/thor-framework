@@ -6,10 +6,10 @@ class CliRegisterCommands {
         else this.#commands[name] = constructor;
     }
 
-    run(name, args, options) {
+    run(name, args, options, params) {
         if(!this.has(name)) throw `Command "${name}" not found!`
         else {
-            const command = new this.#commands[name](name, args, options);
+            const command = new this.#commands[name](name, args, options, params);
             command.run();
         }
     }

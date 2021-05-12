@@ -1,6 +1,6 @@
-import register from "core-cli";
-import coreCommands from "core-commands/register";
-import rootCommands from "root-commands/register";
+import register from "core-cli/register.js";
+import coreCommands from "core-commands/register.js";
+import rootCommands from "root-commands/register.js";
 
 class Cli {
     #args = {};
@@ -9,10 +9,11 @@ class Cli {
 
     constructor([ command, ...params ]) {
         this.#registerCommands();
-        if(register.has(command)) throw `Command "${name}" already registered!`;
-        else {
+        if(!register.has(command)) {
+            console.log(`Command "${command}" is not defined!`);
+        } else {
             this.#initArgsOptions(params);
-            register.run(command, this.#args, this.#options);
+            register.run(command, this.#args, this.#options, params);
         }
     }
 
