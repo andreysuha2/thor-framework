@@ -45,14 +45,20 @@
     "core-request-validator": "core/router/requests",
     "core-controllers": "core/controllers",
     "core-controller": "core/controllers/controller.js",
+    "core-cli": "core/cli",
+    "core-commands": "core/cli/commands",
     "root": "src",
     "root-routes": "src/routes",
     "root-middlewares": "src/middlewares",
     "root-requests": "src/requests",
-    "root-controllers": "src/controllers"
+    "root-controllers": "src/controllers",
+    "root-commands": "src/commands"
   },
   "dependencies": {
     "joi": "^17.4.0",
     "multiparty": "^4.2.2"
+  },
+  "bin": {
+    "hello": "bin/index.js"
   }
 }
