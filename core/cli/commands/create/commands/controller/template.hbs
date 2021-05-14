@@ -1,0 +1,22 @@
+import Controller from "core-controller";
+
+class {{name}}Controller extends Controller {
+    {{#if crud}}
+        create({ params, data, response, request }) {}
+
+        read({ params, query, response, request }) {}
+
+        update({ params, data, response, request }) {}
+
+        delete({ params, data, query, response, request }) {}
+    {{/if}}
+
+    {{#if methods}}
+        {{#each methods}}
+        {{this}}({ params, data, query, response, request }) {}
+
+        {{/each}}
+    {{/if}}
+}
+
+export default {{name}}Controller;

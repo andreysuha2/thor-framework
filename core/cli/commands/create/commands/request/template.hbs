@@ -1,0 +1,15 @@
+import Request from "core-request-validator"
+
+class {{name}}Request extends Request {
+    {{#if pre}}
+    preValidate() { return true; }
+    {{/if}}
+
+    validate(Joi) { return { errors: false }; }
+
+    {{#if post}}
+    postValidate() { return true; }
+    {{/if}}
+}
+
+export default {{name}}Request;
