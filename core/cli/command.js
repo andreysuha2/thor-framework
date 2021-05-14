@@ -1,26 +1,41 @@
+import router from "core-cli/router.js";
+
 class Command {
-    name;
-    args;
-    options;
-    params;
-
-    constructor(name, args, options, params) {
-        this.name = name;
-        this.args = args;
-        this.options = options;
-        this.params = params;
+    name = router.arguments.command;
+    args = router.arguments.args;
+    options = router.arguments.options;
+    originParams = router.arguments.params;
+    default = {
+        child: null,
+        args: {}
     }
-
-    hasOption(name) {
-        return this.options.includes(name);
-    }
-
-    hasArg(name) {
-        return this.args.hasOwnProperty(name);
-    }
+    validateObject = null;
+    validateConfig = null;
 
     run() {
         console.log(`Command ${this.name} running`);
+    }
+
+    isArg(name) {
+        return this.args.hasOwnProperty(name);
+    }
+
+    isOption(name) {
+        return this.options.includes(name);
+    }
+
+    initDefault() {
+        if (this.default.args) this.args = { ...this.default.args, ...this.args };
+    }
+
+    validate() {
+        if(this.hasOwnProperty("schema")) {
+            return this.schema.validate(
+                this.validateObject || { args: this.args, options: this.options },
+                this.validateConfig || {}
+                );
+        }
+        return true;
     }
 }
 

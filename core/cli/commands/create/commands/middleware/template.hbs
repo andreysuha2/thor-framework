@@ -1,0 +1,10 @@
+import Middleware from "core-middleware";
+
+class {{name}}Middleware extends Middleware {
+
+    async handle(next, { response, request }) {
+        next();
+    }
+}
+
+export default {{name}}Middleware;

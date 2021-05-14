@@ -1,0 +1,30 @@
+{{#if parent}}
+import Command from "root-cli/{{parent}}/index.js";
+{{else}}
+import Command from "core-cli/command.js";
+{{/if}}
+{{#if schema}}
+import schema from "./schema.js";
+{{/if}}
+
+class {{name}}Command extends Command {
+    {{#if schema}}
+    schema = schema;
+    {{/if}}
+    {{#if defaults}}
+    default = { args: {} };
+    {{/if}}
+    {{#if children}}
+    static children = [];
+    {{/if}}
+    {{#if validation}}
+    validateObject = null;
+    validateConfig = null;
+    {{/if}}
+
+    run() {
+        console.log(this.name, this.args, this.options);
+    }
+}
+
+export default {{name}}Command;

@@ -55,8 +55,10 @@
     "root-commands": "src/commands"
   },
   "dependencies": {
+    "handlebars": "^4.7.7",
     "joi": "^17.4.0",
-    "multiparty": "^4.2.2"
+    "multiparty": "^4.2.2",
+    "output-file": "^2.0.2"
   },
   "bin": {
     "hello": "bin/index.js"
