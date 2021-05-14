@@ -47,6 +47,7 @@
     "core-controller": "core/controllers/controller.js",
     "core-cli": "core/cli",
     "core-commands": "core/cli/commands",
+    "core-db": "core/database",
     "root": "src",
     "root-routes": "src/routes",
     "root-middlewares": "src/middlewares",
@@ -57,8 +58,11 @@
   "dependencies": {
     "handlebars": "^4.7.7",
     "joi": "^17.4.0",
+    "mongoose": "^5.12.9",
     "multiparty": "^4.2.2",
-    "output-file": "^2.0.2"
+    "mysql2": "^2.2.5",
+    "output-file": "^2.0.2",
+    "sequelize": "^6.6.2"
   },
   "bin": {
     "hello": "bin/index.js"

@@ -43,7 +43,7 @@ class Server {
     }
 
     async #init() {
-        console.log(`Server running at: ${this.url},\n${new Date()}`);
+        console.log(`Server running at: ${this.url}`);
         this.emitEvent("ready");
         this.offEvent("ready");
     }

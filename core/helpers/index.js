@@ -84,3 +84,28 @@ export function pathCatSlashes(path) {
 export function capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+export function env(name, defaultValue) {
+    if(process.env.hasOwnProperty(name)) return process.env[name];
+    return  defaultValue;
+}
+
+export function copy(inObject, saveStructure = false) {
+    if(!saveStructure) return JSON.parse(JSON.stringify(inObject));
+    else {
+        let outObject, value, key
+
+        if (typeof inObject !== "object" || inObject === null) {
+            return inObject;
+        }
+
+        outObject = Array.isArray(inObject) ? [] : {};
+
+        for (key in inObject) {
+            value = inObject[key];
+            outObject[key] = copy(value);
+        }
+
+        return outObject
+    }
+}

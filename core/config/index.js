@@ -1,4 +1,4 @@
-import { deepSearch, isObject } from "core-helpers";
+import { deepSearch, isObject, copy } from "core-helpers";
 
 class Config {
     #list = {}
@@ -11,7 +11,7 @@ class Config {
             const config = this.#list[name],
                 configData = path.length ? deepSearch(path.join("."), config.data) : config.data;
             if(config.updatable) return configData;
-            return configData ? JSON.parse(JSON.stringify(configData)) : configData;
+            return configData ? copy(configData, true) : configData;
         } return undefined;
     }
 
