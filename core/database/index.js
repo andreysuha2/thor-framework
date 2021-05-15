@@ -1,45 +1,41 @@
+import config from "core-config";
 import SequelizeDB from "./Sequelize";
 import MongoDB from "./Mongo";
 
 class Database {
     #credentials = {
-        sql: {
-            host: process.env.SQL_DB_HOST,
-            name: process.env.SQL_DB_NAME,
-            user: process.env.SQL_DB_USER,
-            password: process.env.SQL_DB_PASSWORD,
-            dialect: process.env.SQL_BD_DIALECT
-        },
-        mongo: {
-            host: process.env.MONGO_DB_HOST,
-            port: process.env.MONGO_DB_PORT,
-            name: process.env.MONGO_DB_NAME
-        }
+        sql: null,
+        mongo: null
     };
     #configs = {
-        mongo: {
-            useFindAndModify: false,
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useCreateIndex: true
-        },
-        sql: {
-            logging: false
-        }
+        mongo: null,
+        sql: null
     }
     mongo;
     sql;
 
     constructor() {
-        this.mongo = new MongoDB(this.#credentials.mongo, this.#configs.mongo);
-        this.sql = new SequelizeDB(this.#credentials.sql, this.#configs.sql);
+        const sqlConfig = config.read("database.sql"),
+            mongoConfig = config.read("database.mongo");
+        if(sqlConfig.used) {
+            this.#credentials.sql = sqlConfig.credentials;
+            this.#configs.sql = sqlConfig.config;
+            this.sql = new SequelizeDB(this.#credentials.sql, this.#configs.sql);
+        } else this.sql = null;
+        if(mongoConfig.used) {
+            this.#credentials.mongo = mongoConfig.credentials;
+            this.#configs.mongo = mongoConfig.config;
+            this.mongo = new MongoDB(this.#credentials.mongo, this.#configs.mongo);
+        } else this.mongo = null;
+    }
+
+    get initDatabases() {
+        return [ this.sql, this.mongo ].filter(db => db);
     }
 
     connect() {
-        return Promise.all([
-            this.sql.connect(),
-            this.mongo.connect()
-        ]).then(() => console.log("Databases ready"))
+        return Promise.all(this.initDatabases.map(db => db.connect()))
+            .then(() => console.log("Databases ready"))
             .catch(e => console.log(e));
     }
 }

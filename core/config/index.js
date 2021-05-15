@@ -3,15 +3,15 @@ import { deepSearch, isObject, copy } from "core-helpers";
 class Config {
     #list = {}
 
-    read(path) {
+    read(path, defaultValue = null) {
         path = path.split(".");
         const name = path[0];
         path.splice(0, 1);
         if(this.#list.hasOwnProperty(name)) {
             const config = this.#list[name],
                 configData = path.length ? deepSearch(path.join("."), config.data) : config.data;
-            if(config.updatable) return configData;
-            return configData ? copy(configData, true) : configData;
+            if(config.updatable) return configData ? defaultValue || configData : configData;
+            return configData ? copy(configData, true) : defaultValue || configData;
         } return undefined;
     }
 

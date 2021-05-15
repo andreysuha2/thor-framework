@@ -49,6 +49,7 @@
     "core-commands": "core/cli/commands",
     "core-db": "core/database",
     "root": "src",
+    "root-config": "src/config",
     "root-routes": "src/routes",
     "root-middlewares": "src/middlewares",
     "root-requests": "src/requests",

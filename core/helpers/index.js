@@ -86,8 +86,8 @@ export function capitalizeFirstLetter(str) {
 }
 
 export function env(name, defaultValue) {
-    if(process.env.hasOwnProperty(name)) return process.env[name];
-    return  defaultValue;
+    if(process.env.hasOwnProperty(name)) return process.env[name] || defaultValue;
+    return defaultValue;
 }
 
 export function copy(inObject, saveStructure = false) {
