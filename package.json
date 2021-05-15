@@ -27,7 +27,8 @@
   "homepage": "https://github.com/andreysuha2/thor-framework#readme",
   "devDependencies": {
     "dotenv": "^8.5.1",
-    "link-module-alias": "^1.2.0"
+    "link-module-alias": "^1.2.0",
+    "sequelize-cli": "^6.2.0"
   },
   "_moduleAliases": {
     "core": "core",

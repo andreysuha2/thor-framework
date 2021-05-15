@@ -9,7 +9,7 @@ class CreateCommand extends Command {
     successMessage = "Created complete!";
     fileNamePrefix = "";
     indexAsName = false;
-    static children = [ "controller", "middleware", "request", "command" ];
+    static children = [ "controller", "middleware", "request", "command", "migration" ];
 
 
     run() {
